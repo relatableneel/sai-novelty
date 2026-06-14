@@ -21,7 +21,11 @@ useState("All");
 const [search,setSearch] =
 useState("");
 
+const [openImages,setOpenImages] =
+useState<string[]>([]);
 
+const [imageIndex,setImageIndex] =
+useState(0);
 
 
 useEffect(()=>{
@@ -176,31 +180,43 @@ z-10
 >
 
 
-<h1
+<div className="
+flex
+items-center
+gap-3
+">
+
+<img
+src="/logo.png"
 className="
+w-20
+h-20
+object-contain
+"
+/>
+
+<div>
+
+<h1 className="
 text-3xl
 font-bold
 text-pink-700
-"
->
-
-🌸 Sai Novelty
-
+">
+Sai Novelty
 </h1>
 
 
-
-<p
-className="
+<p className="
 text-sm
-text-gray-600
-mt-1
-"
->
-
+text-gray-500
+">
 by Sarika S Badgujar
-
 </p>
+
+</div>
+
+</div>
+
 
 
 
@@ -429,7 +445,13 @@ rounded-full
 "
 >
 
-New
+{
+item.available
+?
+"New"
+:
+"Sold Out"
+}
 
 </span>
 
@@ -440,10 +462,19 @@ New
 
 src={item.images?.[0]}
 
+onClick={()=>{
+
+setOpenImages(item.images);
+
+setImageIndex(0);
+
+}}
+
 className="
 h-36
 w-full
 object-cover
+cursor-pointer
 "
 
 />
@@ -499,6 +530,11 @@ mt-1
 
 
 
+{
+item.available
+?
+(
+
 <button
 
 onClick={()=>
@@ -521,6 +557,37 @@ font-medium
 💬 Enquire
 
 </button>
+
+)
+
+:
+
+(
+
+<button
+
+disabled
+
+className="
+mt-3
+w-full
+bg-gray-400
+text-white
+rounded-full
+py-2
+text-xs
+font-medium
+"
+
+>
+
+Sold Out
+
+</button>
+
+)
+
+}
 
 
 
@@ -559,7 +626,6 @@ text-gray-900
 "
 >
 
-
 <h2
 className="
 text-xl
@@ -572,8 +638,6 @@ text-pink-700
 
 </h2>
 
-
-
 <p
 className="
 text-gray-600
@@ -585,8 +649,6 @@ mt-1
 by Sarika S Badgujar
 
 </p>
-
-
 
 <p
 className="
@@ -658,7 +720,126 @@ New Collections Added Regularly ✨
 
 </footer>
 
+{
+openImages.length > 0 && (
 
+<div
+className="
+fixed
+inset-0
+bg-black/90
+z-50
+flex
+items-center
+justify-center
+"
+>
+
+
+<button
+
+onClick={()=>
+setOpenImages([])
+}
+
+className="
+absolute
+top-5
+right-5
+text-white
+text-3xl
+"
+>
+
+×
+
+
+</button>
+
+
+
+<img
+
+src={openImages[imageIndex]}
+
+className="
+max-h-[80vh]
+max-w-[90vw]
+rounded-xl
+"
+
+/>
+
+
+
+{openImages.length > 1 && (
+
+<div
+className="
+absolute
+bottom-8
+flex
+gap-8
+"
+>
+
+
+<button
+
+onClick={()=>
+setImageIndex(
+imageIndex===0
+?
+openImages.length-1
+:
+imageIndex-1
+)
+}
+
+className="
+text-white
+text-3xl
+"
+>
+
+←
+
+</button>
+
+
+
+<button
+
+onClick={()=>
+setImageIndex(
+imageIndex===openImages.length-1
+?
+0
+:
+imageIndex+1
+)
+}
+
+className="
+text-white
+text-3xl
+"
+>
+
+→
+
+</button>
+
+
+</div>
+
+)}
+
+
+</div>
+
+)
+}
 
 </main>
 
